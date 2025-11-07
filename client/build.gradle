@@ -36,9 +36,8 @@ configurations {
  */
 dependencies {
     forge "net.minecraftforge:forge:$rootProject.forge_version"
-    common(project(path: ':common', configuration: 'namedElements')) { transitive = false }
-    shadowBundle project(path: ':common', configuration: 'transformProductionForge')
-    shadowBundle(implementation(project(path: ":server")){ transitive = false })
+    implementation(include(project(path: ":common")))
+    runtimeOnly(include(project(path: ":server")))
 }
 
 processResources {
