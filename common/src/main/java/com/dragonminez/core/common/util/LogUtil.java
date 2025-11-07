@@ -23,6 +23,12 @@ public final class LogUtil {
     private static final Logger LOGGER = LogManager.getLogger();
 
     /**
+     * Private constructor to prevent instantiation.
+     */
+    private LogUtil() {
+    }
+
+    /**
      * Logs an informational message with optional parameters.
      *
      * @param env     the execution environment used as prefix (e.g., CLIENT or SERVER)
@@ -80,11 +86,5 @@ public final class LogUtil {
      */
     private static String prefixedMessage(Env env, String message) {
         return "[" + env.name() + "] " + message;
-    }
-
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private LogUtil() {
     }
 }
