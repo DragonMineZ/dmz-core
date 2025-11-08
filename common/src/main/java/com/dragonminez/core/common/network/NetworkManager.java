@@ -1,8 +1,9 @@
 package com.dragonminez.core.common.network;
 
 import com.dragonminez.core.common.Reference;
-import com.dragonminez.core.common.network.event.PacketRegistrationEvent;
 import com.dragonminez.core.common.network.model.IPacket;
+import com.dragonminez.core.common.sync.model.SyncPacket;
+import com.dragonminez.core.common.sync.network.HandlerSyncPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -10,7 +11,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -73,10 +73,9 @@ public class NetworkManager {
                 PROTOCOL_VERSION::equals, // Predicate to validate the client version
                 PROTOCOL_VERSION::equals  // Predicate to validate the server version
         );
-
-        // Post an event to allow registration of packets
-        final PacketRegistrationEvent event = new PacketRegistrationEvent(INSTANCE);
-        MinecraftForge.EVENT_BUS.post(event);
+        // Register synchronization packet handler
+        NetworkManager.INSTANCE.registerMessage(0,
+                SyncPacket.class, SyncPacket::encode, SyncPacket::decode, HandlerSyncPacket::handle);
     }
 
     /**

@@ -10,8 +10,8 @@ import net.minecraft.network.FriendlyByteBuf;
  * Typically, a corresponding static {@code decode} method is provided to reconstruct the packet from the buffer.
  * <p>
  * Packets implementing this interface can be sent between the client and server using the helper methods
- * in {@link NetworkManager}, such as {@link NetworkManager#sendTo(Object, net.minecraft.world.entity.player.Player)},
- * {@link NetworkManager#sendToServer(Object)}, {@link NetworkManager#sendToClient(Object, net.minecraft.world.level.Level, net.minecraft.core.BlockPos)},
+ * in {@link NetworkManager}, such as {@link NetworkManager#sendTo(IPacket, net.minecraft.world.entity.player.Player)},
+ * {@link NetworkManager#sendToServer(IPacket)}, {@link NetworkManager#sendToClient(IPacket, net.minecraft.world.level.Level, net.minecraft.core.BlockPos)},
  * and other variants for broadcasting or targeting entities/chunks.
  *
  * <p>Usage example:</p>
