@@ -85,6 +85,9 @@ public final class LogUtil {
      * @return the formatted message including the environment prefix
      */
     private static String prefixedMessage(Env env, String message) {
+        if (env == null) {
+            return message;
+        }
         return "[" + env.name() + "] " + message;
     }
 }
