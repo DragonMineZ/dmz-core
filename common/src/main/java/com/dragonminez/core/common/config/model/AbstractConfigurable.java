@@ -11,34 +11,45 @@ package com.dragonminez.core.common.config.model;
  */
 public abstract class AbstractConfigurable {
 
-  /**
-   * Returns the unique identifier of this configurable object.
-   * <p>
-   * This ID is typically used as the file name (with a .json extension) and as a registry key.
-   *
-   * @return the unique string ID
-   */
-  public abstract String getId();
+    /**
+     * Returns the unique identifier of this configurable object.
+     * <p>
+     * This ID is typically used as the file name (with a .json extension) and as a registry key.
+     *
+     * @return the unique string ID
+     */
+    public abstract String getId();
 
-  /**
-   * Returns the folder name inside the mod's config directory where this configuration is stored.
-   * <p>
-   * Example: if this method returns {@code "abilities"}, the file path will be
-   * {@code config/<modid>/abilities/<id>.json}.
-   *
-   * @return the folder name for this configuration
-   */
-  public abstract String folder();
+    /**
+     * Returns the folder name inside the mod's config directory where this configuration is stored.
+     * <p>
+     * Example: if this method returns {@code "abilities"}, the file path will be
+     * {@code config/<modid>/abilities/<id>.json}.
+     *
+     * @return the folder name for this configuration
+     */
+    public abstract String folder();
 
-  /**
-   * Determines whether this object can be overridden by configurations loaded from disk.
-   * <p>
-   * Returning {@code false} ensures that existing in-memory definitions cannot be replaced
-   * by those loaded from JSON files.
-   *
-   * @return {@code true} if the configuration can be overridden, otherwise {@code false}
-   */
-  public boolean allowOverrideByConfig() {
-    return true;
-  }
+    /**
+     * Determines whether this object can be overridden by configurations loaded from disk.
+     * <p>
+     * Returning {@code false} ensures that existing in-memory definitions cannot be replaced
+     * by those loaded from JSON files.
+     *
+     * @return {@code true} if the configuration can be overridden, otherwise {@code false}
+     */
+    public boolean allowOverrideByConfig() {
+        return true;
+    }
+
+    /**
+     * Determines whether this configuration can be reloaded at runtime.
+     * <p>
+     * If {@code true}, the configuration can be updated without restarting the application.
+     *
+     * @return {@code true} if the configuration is reloadable, otherwise {@code false}
+     */
+    public boolean isRealodable() {
+        return true;
+    }
 }
