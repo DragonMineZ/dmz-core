@@ -17,12 +17,13 @@ import java.util.stream.Stream;
  * It is designed as a base class for other registry systems, such as
  * {@link DeferredRegistry}, which implements deferred (lazy) registration.
  *
- * @param <T> The type of objects stored in this registry.
+ * @param <K> The type of keys used for registration.
+ * @param <V> The type of objects stored in this registry.
  */
-public class Registry<T> {
+public class Registry<K, V> {
 
   /** Thread-safe map of registered objects, keyed by their unique string identifiers. */
-  protected final Map<String, T> map = new ConcurrentHashMap<>();
+  protected final Map<K, V> map = new ConcurrentHashMap<>();
 
   /** Whether this registry is locked (disallowing further registrations). */
   private volatile boolean locked = false;
@@ -34,7 +35,7 @@ public class Registry<T> {
    * @param value The object to register.
    * @throws IllegalStateException If the registry is locked or the key is already registered.
    */
-  public void register(String key, T value) {
+  public void register(K key, V value) {
     checkLocked();
     Object prev = map.putIfAbsent(key, value);
     if (prev != null) {
@@ -48,7 +49,7 @@ public class Registry<T> {
    * @param key The string key of the registered object.
    * @return An {@link Optional} containing the value, or empty if not found.
    */
-  public Optional<T> get(String key) {
+  public Optional<V> get(K key) {
     return Optional.ofNullable(map.get(key));
   }
 
@@ -58,7 +59,7 @@ public class Registry<T> {
    * @param key The string key to check.
    * @return {@code true} if the key exists, {@code false} otherwise.
    */
-  public boolean contains(String key) {
+  public boolean contains(K key) {
     return map.containsKey(key);
   }
 
@@ -67,7 +68,7 @@ public class Registry<T> {
    *
    * @return A stream of string keys.
    */
-  public Stream<String> keys() {
+  public Stream<K> keys() {
     return map.keySet().stream();
   }
 
@@ -76,7 +77,7 @@ public class Registry<T> {
    *
    * @return A stream of registered values.
    */
-  public Stream<T> values() {
+  public Stream<V> values() {
     return map.values().stream();
   }
 

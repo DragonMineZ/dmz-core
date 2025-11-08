@@ -27,13 +27,13 @@ import java.util.function.Supplier;
  *
  * @param <T> The type of object stored in the target registry.
  */
-public class DeferredRegistry<T> extends Registry<T> {
+public class DeferredRegistry<K, T> extends Registry<K, T> {
 
   /** List of registration actions to apply later. */
   private final List<Runnable> registrations = Collections.synchronizedList(new ArrayList<>());
 
   /** The registry where entries will ultimately be stored. */
-  private final Registry<T> target;
+  private final Registry<K, T> target;
 
   /**
    * Creates a new deferred registry that applies registrations to the given target.
@@ -41,7 +41,7 @@ public class DeferredRegistry<T> extends Registry<T> {
    * @param target The registry that will receive the actual entries when {@link #registerAll()} is called.
    * @throws NullPointerException if the target is null.
    */
-  public DeferredRegistry(Registry<T> target) {
+  public DeferredRegistry(Registry<K, T> target) {
     this.target = Objects.requireNonNull(target, "target");
   }
 
@@ -56,7 +56,7 @@ public class DeferredRegistry<T> extends Registry<T> {
    * @throws IllegalStateException If this registry is locked.
    */
   @Override
-  public void register(String key, T value) {
+  public void register(K key, T value) {
     checkLocked();
     registrations.add(() -> target.register(key, value));
   }
@@ -71,7 +71,7 @@ public class DeferredRegistry<T> extends Registry<T> {
    * @param supplier A supplier that produces the object to be registered.
    * @throws IllegalStateException If this registry is locked.
    */
-  public void register(String key, Supplier<? extends T> supplier) {
+  public void register(K key, Supplier<? extends T> supplier) {
     checkLocked();
     registrations.add(() -> target.register(key, supplier.get()));
   }

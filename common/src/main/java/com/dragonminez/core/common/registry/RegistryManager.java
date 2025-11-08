@@ -55,8 +55,8 @@ public final class RegistryManager {
    * @param value the value to register
    * @param <T>   the value type stored in the registry
    */
-  public <T> void registerValue(Class<? extends Registry<T>> type, String key, T value) {
-    final Registry<T> registry = registry(type);
+  public <K, T> void registerValue(Class<? extends Registry<K, T>> type, K key, T value) {
+    final Registry<K, T> registry = registry(type);
     registry.register(key, value);
     this.registries.put(type, registry);
   }
