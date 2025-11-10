@@ -44,6 +44,18 @@ public class Registry<K, V> {
   }
 
   /**
+   * Removes a value from the registry.
+   *
+   * @param key The key to remove.
+   * @return An {@link Optional} containing the removed value, or empty if none was present.
+   * @throws IllegalStateException If the registry is locked.
+   */
+  public Optional<V> remove(K key) {
+    checkLocked();
+    return Optional.ofNullable(map.remove(key));
+  }
+
+  /**
    * Retrieves a value from the registry.
    *
    * @param key The string key of the registered object.
