@@ -33,7 +33,7 @@ public class HandlerSyncPacket {
             final Class<T> type = (Class<T>) syncPacket.data().getClass();
 
             // Retrieve the central SyncRegistry from the global RegistryManager
-            final SyncRegistry<T> syncRegistry = RegistryManager.INSTANCE.registry(SyncRegistry.class);
+            final SyncRegistry<T> syncRegistry = RegistryManager.registry(SyncRegistry.class);
 
             // Attempt to execute the handler for this type
             syncRegistry.get(type).ifPresentOrElse(

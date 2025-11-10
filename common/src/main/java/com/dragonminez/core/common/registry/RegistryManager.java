@@ -24,46 +24,39 @@ import java.util.function.Consumer;
  *
  * <p>Example usage:
  * <pre>{@code
- * ConfigRegistry config = RegistryManager.INSTANCE.registry(ConfigRegistry.class);
+ * ConfigRegistry config = RegistryManager.registry(ConfigRegistry.class);
  *
- * RegistryManager.INSTANCE.registerValue(
+ * RegistryManager.registerValue(
  *         ConfigRegistry.class,
  *         "example",
  *         new ConfigObject()
  * );
  *
  * Optional<ConfigObject> value =
- *         RegistryManager.INSTANCE.getValue(ConfigRegistry.class, "example");
+ *         RegistryManager.getValue(ConfigRegistry.class, "example");
  * }</pre>
+ *
+ * <p>All methods are static, so there is no need to create an instance of this class.
  */
 public final class RegistryManager {
 
-    /**
-     * Singleton instance for global access.
-     */
-    public static final RegistryManager INSTANCE = new RegistryManager();
+    private RegistryManager() {}
 
-    /**
-     * Internal cache of all instantiated registries, mapped by their class type.
-     */
-    private final Map<Class<?>, Object> registries = new ConcurrentHashMap<>();
-
-    private RegistryManager() {
-    }
+    /** Internal cache of all instantiated registries, mapped by their class type. */
+    private static final Map<Class<?>, Object> REGISTRIES = new ConcurrentHashMap<>();
 
     /**
      * Injects a registry instance into the manager.
      * <p>
-     * If a registry of the same type already exists, the provided instance is ignored
-     * and the method returns {@code false}.
+     * If a registry of the same type already exists, the provided instance is ignored.
      *
      * @param type     the registry class type
      * @param registry the instance to insert
      * @param <K>      the key type of the registry
      * @param <T>      the value type of the registry
      */
-    public <K, T> void register(Class<? extends Registry<K, T>> type, Registry<K, T> registry) {
-        this.registries.putIfAbsent(type, registry);
+    public static <K, T> void register(Class<? extends Registry<K, T>> type, Registry<K, T> registry) {
+        REGISTRIES.putIfAbsent(type, registry);
     }
 
     /**
@@ -72,8 +65,8 @@ public final class RegistryManager {
      * @param type the registry class to remove
      * @return {@code true} if a registry was removed, {@code false} otherwise
      */
-    public boolean remove(Class<?> type) {
-        return registries.remove(type) != null;
+    public static boolean remove(Class<?> type) {
+        return REGISTRIES.remove(type) != null;
     }
 
     /**
@@ -84,7 +77,7 @@ public final class RegistryManager {
      * @param <K>  the key type used by the registry
      * @param <T>  the value type stored in the registry
      */
-    public <K, T> void removeValue(Class<? extends Registry<K, T>> type, K key) {
+    public static <K, T> void removeValue(Class<? extends Registry<K, T>> type, K key) {
         final Registry<K, T> registry = registry(type);
         registry.remove(key);
     }
@@ -99,14 +92,12 @@ public final class RegistryManager {
      * @throws IllegalStateException if instantiation of the registry fails
      */
     @SuppressWarnings("unchecked")
-    public <T> T registry(Class<T> type) {
-        return (T) registries.computeIfAbsent(type, t -> {
+    public static <T> T registry(Class<T> type) {
+        return (T) REGISTRIES.computeIfAbsent(type, t -> {
             try {
                 return t.getDeclaredConstructor().newInstance();
             } catch (Exception e) {
-                throw new IllegalStateException(
-                        "Failed to create registry for " + t.getName(), e
-                );
+                throw new IllegalStateException("Failed to create registry for " + t.getName(), e);
             }
         });
     }
@@ -131,7 +122,7 @@ public final class RegistryManager {
      * @param <T>            the value type stored in the registry
      */
     @SuppressWarnings("unchecked")
-    public <R extends Registry<K, T>, K, T> void registerValue(
+    public static <R extends Registry<K, T>, K, T> void registerValue(
             Class<R> type,
             K key,
             T value,
@@ -140,7 +131,7 @@ public final class RegistryManager {
         final Registry<K, T> registry = registry(type);
         beforeRegister.accept((R) registry);
         registry.register(key, value);
-        this.registries.put(type, registry);
+        REGISTRIES.put(type, registry);
     }
 
     /**
@@ -155,8 +146,8 @@ public final class RegistryManager {
      * @param <K>   the key type of the registry
      * @param <T>   the value type of the registry
      */
-    public <K, T> void registerValue(Class<? extends Registry<K, T>> type, K key, T value) {
-        this.registerValue(type, key, value, r -> {});
+    public static <K, T> void registerValue(Class<? extends Registry<K, T>> type, K key, T value) {
+        registerValue(type, key, value, r -> {});
     }
 
     /**
@@ -168,7 +159,7 @@ public final class RegistryManager {
      * @param <T>  the value type stored in the registry
      * @return an {@link Optional} containing the value if it exists, otherwise empty
      */
-    public <K, T> Optional<T> getValue(Class<? extends Registry<K, T>> type, K key) {
+    public static <K, T> Optional<T> getValue(Class<? extends Registry<K, T>> type, K key) {
         final Registry<K, T> registry = registry(type);
         return registry.get(key);
     }

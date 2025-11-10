@@ -77,12 +77,12 @@ public final class ConfigManager {
         return null;
       }
 
-      ConfigRegistry registry = RegistryManager.INSTANCE.registry(ConfigRegistry.class);
+      ConfigRegistry registry = RegistryManager.registry(ConfigRegistry.class);
       if (!obj.allowOverrideByConfig() && registry.contains(obj.getId())) {
         return null;
       }
 
-      RegistryManager.INSTANCE.registerValue(ConfigRegistry.class, obj.getId(), obj);
+      RegistryManager.registerValue(ConfigRegistry.class, obj.getId(), obj);
       return obj;
     } catch (Throwable t) {
       t.printStackTrace(System.out);
@@ -124,7 +124,7 @@ public final class ConfigManager {
       String json = GSON.toJson(obj);
       Files.writeString(file, json, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 
-      RegistryManager.INSTANCE.registerValue(ConfigRegistry.class, obj.getId(), obj);
+      RegistryManager.registerValue(ConfigRegistry.class, obj.getId(), obj);
       return true;
     } catch (Throwable t) {
       t.printStackTrace(System.out);
