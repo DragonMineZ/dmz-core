@@ -1,5 +1,6 @@
 package com.dragonminez.core.client;
 
+import com.dragonminez.core.client.registry.SyncRegister;
 import com.dragonminez.core.common.DMZCoreCommon;
 import com.dragonminez.core.common.Reference;
 import com.dragonminez.core.common.Env;
@@ -10,5 +11,6 @@ public final class DMZCoreClient {
 
     public DMZCoreClient() {
         DMZCoreCommon.init(Env.CLIENT);
+        SyncRegister.init();
     }
 }
