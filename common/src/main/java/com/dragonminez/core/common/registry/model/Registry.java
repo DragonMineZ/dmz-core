@@ -1,4 +1,4 @@
-package com.dragonminez.core.common.registry.impl;
+package com.dragonminez.core.common.registry.model;
 
 import java.util.Map;
 import java.util.Optional;
@@ -22,10 +22,14 @@ import java.util.stream.Stream;
  */
 public class Registry<K, V> {
 
-  /** Thread-safe map of registered objects, keyed by their unique string identifiers. */
+  /**
+   * Thread-safe map of registered objects, keyed by their unique string identifiers.
+   */
   protected final Map<K, V> map = new ConcurrentHashMap<>();
 
-  /** Whether this registry is locked (disallowing further registrations). */
+  /**
+   * Whether this registry is locked (disallowing further registrations).
+   */
   private volatile boolean locked = false;
 
   /**
@@ -47,12 +51,11 @@ public class Registry<K, V> {
    * Removes a value from the registry.
    *
    * @param key The key to remove.
-   * @return An {@link Optional} containing the removed value, or empty if none was present.
    * @throws IllegalStateException If the registry is locked.
    */
-  public Optional<V> remove(K key) {
+  public void remove(K key) {
     checkLocked();
-    return Optional.ofNullable(map.remove(key));
+    map.remove(key);
   }
 
   /**

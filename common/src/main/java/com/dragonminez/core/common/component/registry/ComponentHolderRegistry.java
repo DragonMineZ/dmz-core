@@ -1,6 +1,6 @@
 package com.dragonminez.core.common.component.registry;
 
-import com.dragonminez.core.common.registry.impl.Registry;
+import com.dragonminez.core.common.registry.model.Registry;
 import net.minecraft.nbt.CompoundTag;
 
 import java.util.Optional;

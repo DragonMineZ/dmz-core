@@ -1,7 +1,7 @@
 package com.dragonminez.core.common.component.registry;
 
 import com.dragonminez.core.common.component.model.Component;
-import com.dragonminez.core.common.registry.impl.Registry;
+import com.dragonminez.core.common.registry.model.Registry;
 
 /**
  * Registry responsible for storing all component definitions.

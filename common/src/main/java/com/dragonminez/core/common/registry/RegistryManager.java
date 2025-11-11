@@ -1,6 +1,6 @@
 package com.dragonminez.core.common.registry;
 
-import com.dragonminez.core.common.registry.impl.Registry;
+import com.dragonminez.core.common.registry.model.Registry;
 
 import java.util.Map;
 import java.util.Optional;
@@ -102,52 +102,24 @@ public final class RegistryManager {
         });
     }
 
-    /**
-     * Registers a value into the given registry type, executing a preprocessing step
-     * before the registration occurs.
-     *
-     * <p>This method enables advanced behavior such as:
-     * <ul>
-     *     <li>initializing registry internals</li>
-     *     <li>validating its state prior to insertion</li>
-     *     <li>injecting dependencies into the registry instance</li>
-     * </ul>
-     *
-     * @param type           the registry class type
-     * @param key            the identifier for the value
-     * @param value          the object to register
-     * @param beforeRegister a consumer invoked with the registry instance before insertion
-     * @param <R>            the registry implementation type
-     * @param <K>            the key type stored in the registry
-     * @param <T>            the value type stored in the registry
-     */
-    @SuppressWarnings("unchecked")
-    public static <R extends Registry<K, T>, K, T> void registerValue(
-            Class<R> type,
-            K key,
-            T value,
-            Consumer<R> beforeRegister
+    public static <R extends Registry<K, V>, K, V> void registerValue(
+        Class<R> registryClass,
+        K key,
+        V value,
+        Consumer<R> beforeRegister
     ) {
-        final Registry<K, T> registry = registry(type);
-        beforeRegister.accept((R) registry);
+        final R registry = registry(registryClass);
+        beforeRegister.accept(registry);
         registry.register(key, value);
-        REGISTRIES.put(type, registry);
+        REGISTRIES.put(registryClass, registry);
     }
 
-    /**
-     * Registers a value into the given registry type.
-     *
-     * <p>This is the standard convenience overload, equivalent to calling
-     * {@link #registerValue(Class, Object, Object, Consumer)} with a no-op preprocessing step.
-     *
-     * @param type  the registry class type
-     * @param key   the identifier under which the value is stored
-     * @param value the value to insert
-     * @param <K>   the key type of the registry
-     * @param <T>   the value type of the registry
-     */
-    public static <K, T> void registerValue(Class<? extends Registry<K, T>> type, K key, T value) {
-        registerValue(type, key, value, r -> {});
+    public static <R extends Registry<K, V>, K, V> void registerValue(
+        Class<R> registryClass,
+        K key,
+        V value
+    ) {
+        registerValue(registryClass, key, value, r -> {});
     }
 
     /**

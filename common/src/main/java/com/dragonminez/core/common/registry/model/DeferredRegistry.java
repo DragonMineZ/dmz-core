@@ -1,4 +1,4 @@
-package com.dragonminez.core.common.registry.impl;
+package com.dragonminez.core.common.registry.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
