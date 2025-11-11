@@ -7,8 +7,11 @@ import net.minecraftforge.fml.common.Mod;
 @Mod(Reference.MOD_ID + "_common")
 public final class DMZCoreCommon {
 
-    public static void init(Env env) {
+    public DMZCoreCommon() {
         NetworkManager.init();
+    }
+
+    public static void init(Env env) {
         LogUtil.info(env, "DMZCore initialized!");
     }
 }
