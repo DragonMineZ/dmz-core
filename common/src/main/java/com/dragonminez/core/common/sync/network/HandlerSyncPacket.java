@@ -1,5 +1,6 @@
 package com.dragonminez.core.common.sync.network;
 
+import com.dragonminez.core.common.network.model.ISerializable;
 import com.dragonminez.core.common.registry.RegistryManager;
 import com.dragonminez.core.common.sync.SyncRegistry;
 import com.dragonminez.core.common.sync.model.SyncPacket;
@@ -27,7 +28,8 @@ public class HandlerSyncPacket {
      * @param <T>        The type of the object contained in the packet.
      */
     @SuppressWarnings("unchecked")
-    public static <T> void handle(SyncPacket<T> syncPacket, Supplier<NetworkEvent.Context> ctx) {
+    public static <T extends ISerializable<T>> void handle(SyncPacket<T> syncPacket,
+        Supplier<NetworkEvent.Context> ctx) {
         // Enqueue work to the main thread to safely handle the packet
         ctx.get().enqueueWork(() -> {
             final Class<T> type = (Class<T>) syncPacket.data().getClass();

@@ -2,6 +2,7 @@ package com.dragonminez.core.common.sync;
 
 import com.dragonminez.core.common.Env;
 import com.dragonminez.core.common.network.NetworkManager;
+import com.dragonminez.core.common.network.model.ISerializable;
 import com.dragonminez.core.common.sync.model.SyncPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,8 +25,8 @@ public class SyncManager {
      * @param player The player who will receive the packet.
      * @param <T>    The type of the object being synchronized.
      */
-    public static <T> void sendTo(T object, ServerPlayer player) {
-        NetworkManager.sendTo(new SyncPacket<>(Env.CLIENT, object.getClass(), object), player);
+    public static <T extends ISerializable<T>> void sendTo(T object, ServerPlayer player) {
+        NetworkManager.sendTo(new SyncPacket<>(Env.CLIENT, object), player);
     }
 
     /**
@@ -34,8 +35,8 @@ public class SyncManager {
      * @param object The object to send. Must be compatible with {@link SyncPacket}.
      * @param <T>    The type of the object being synchronized.
      */
-    public static <T> void broadcast(T object) {
-        NetworkManager.sendToAll(new SyncPacket<>(Env.CLIENT, object.getClass(), object));
+    public static <T extends ISerializable<T>> void broadcast(T object) {
+        NetworkManager.sendToAll(new SyncPacket<>(Env.CLIENT, object));
     }
 
     /**
@@ -45,8 +46,8 @@ public class SyncManager {
      * @param entityToTrack The entity being tracked by the players who will receive the packet.
      * @param <T>           The type of the object being synchronized.
      */
-    public static <T> void sendTracking(T object, LivingEntity entityToTrack) {
-        NetworkManager.sendToAllTracking(new SyncPacket<>(Env.CLIENT, object.getClass(), object), entityToTrack);
+    public static <T extends ISerializable<T>> void sendTracking(T object, LivingEntity entityToTrack) {
+        NetworkManager.sendToAllTracking(new SyncPacket<>(Env.CLIENT, object), entityToTrack);
     }
 
     /**
@@ -55,7 +56,7 @@ public class SyncManager {
      * @param object The object to send. Must be compatible with {@link SyncPacket}.
      * @param <T>    The type of the object being synchronized.
      */
-    public static <T> void sendToServer(T object) {
-        NetworkManager.sendToServer(new SyncPacket<>(Env.SERVER, object.getClass(), object));
+    public static <T extends ISerializable<T>> void sendToServer(T object) {
+        NetworkManager.sendToServer(new SyncPacket<>(Env.SERVER, object));
     }
 }
