@@ -1,11 +1,9 @@
 package com.dragonminez.core.client.component.sync;
 
 import com.dragonminez.core.common.component.ComponentManager;
-import com.dragonminez.core.common.component.network.model.ComponentAddSync;
-import com.dragonminez.core.common.component.network.model.ComponentRemoveSync;
-import com.dragonminez.core.common.registry.RegistryManager;
+import com.dragonminez.core.common.component.network.ComponentAddSync;
+import com.dragonminez.core.common.component.network.ComponentRemoveSync;
 import com.dragonminez.core.common.sync.SyncRegistry;
-import java.util.function.Consumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
@@ -48,13 +46,11 @@ public class ComponentSyncRegister {
    * <p>The method assumes that it is executed on the client and that
    * {@link Minecraft#getInstance()} is available.
    */
-  @SuppressWarnings("unchecked")
   public static void init() {
 
-    RegistryManager.registerValue(
-        SyncRegistry.class,
+    SyncRegistry.register(
         ComponentAddSync.class,
-        (Consumer<ComponentAddSync>) sync -> {
+        (notUsed, sync) -> {
           Player player = null;
           if (Minecraft.getInstance().level != null) {
             player = Minecraft.getInstance().level.getPlayerByUUID(sync.holder());
@@ -71,10 +67,9 @@ public class ComponentSyncRegister {
         }
     );
 
-    RegistryManager.registerValue(
-        SyncRegistry.class,
+    SyncRegistry.register(
         ComponentRemoveSync.class,
-        (Consumer<ComponentRemoveSync>) sync -> {
+        (notUsed, sync) -> {
           Player player = null;
           if (Minecraft.getInstance().level != null) {
             player = Minecraft.getInstance().level.getPlayerByUUID(sync.holder());

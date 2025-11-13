@@ -3,8 +3,8 @@ package com.dragonminez.core.server.component;
 import static com.dragonminez.core.common.component.ComponentManager.getAll;
 
 import com.dragonminez.core.common.component.model.Component;
-import com.dragonminez.core.common.component.network.model.ComponentAddSync;
-import com.dragonminez.core.common.component.network.model.ComponentRemoveSync;
+import com.dragonminez.core.common.component.network.ComponentAddSync;
+import com.dragonminez.core.common.component.network.ComponentRemoveSync;
 import com.dragonminez.core.common.network.model.ISerializable;
 import com.dragonminez.core.common.sync.SyncManager;
 import java.util.UUID;

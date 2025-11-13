@@ -1,4 +1,4 @@
-package com.dragonminez.core.common.component.network.model;
+package com.dragonminez.core.common.component.network;
 
 import com.dragonminez.core.common.network.model.ISerializable;
 import java.util.UUID;

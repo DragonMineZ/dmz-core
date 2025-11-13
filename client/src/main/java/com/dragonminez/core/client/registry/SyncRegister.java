@@ -7,5 +7,4 @@ public class SyncRegister {
   public static void init() {
     ComponentSyncRegister.init();
   }
-
 }
