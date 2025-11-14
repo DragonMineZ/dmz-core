@@ -7,7 +7,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'dmzcore'
+rootProject.name = 'dmz-core'
 
 include 'server'
 include 'common'
